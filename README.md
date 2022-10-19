@@ -1,21 +1,26 @@
-# docker-k6-grafana-influxdb
-Demonstrates how to run load tests with containerised instances of K6, Grafana and InfluxDB.
-
-#### Article
-This is the accompanying source code for the following article. Please read for a detailed breakdown of the code and how K6, Grafana and InfluxDB work together using Docker Compose:
-
-https://medium.com/swlh/beautiful-load-testing-with-k6-and-docker-compose-4454edb3a2e3
-
-#### Dashboards
-The dashboard in /dashboards is adapted from the excellent K6 / Grafana dashboard here:
-https://grafana.com/grafana/dashboards/2587
-
-There are only two small modifications:
-* the data source is configured to use the docker created InfluxDB data source
-* the time period is set to now-15m, which I feel is a better view for most tests
-
-#### Scripts
-The script here is an example of a low Virtual User (VU) load test of the excellent Star Wars API:
-https://swapi.dev/
-
-If you're tinkering with the script, it is just a friendly open source API, be gentle!
+## EC2 User-data
+```
+#!/bin/bash -ex
+yum -y update
+yum -y install docker git
+usermod -aG docker $USER
+systemctl enable docker
+systemctl start docker
+curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+git clone https://github.com/MamNonDevOps/docker-k6-grafana-influxdb.git
+```
+Kiểm tra start docker service, nếu có lỗi sau xảy ra
+```
+Traceback (most recent call last):
+  File "urllib3/connectionpool.py", line 677, in urlopen
+  File "urllib3/connectionpool.py", line 392, in _make_request
+  File "http/client.py", line 1277, in request
+  File "http/client.py", line 1323, in _send_request
+  File "http/client.py", line 1272, in endheaders
+  File "http/client.py", line 1032, in _send_output
+  File "http/client.py", line 972, in send
+  File "docker/transport/unixconn.py", line 43, in connect
+FileNotFoundError: [Errno 2] No such file or directory
+```
