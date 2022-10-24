@@ -2,10 +2,10 @@
 ```
 #!/bin/bash -ex
 yum -y update
-yum -y install docker git
+yum -y install httpd docker git htop
 usermod -aG docker ec2-user
-systemctl enable docker
-systemctl start docker
+systemctl enable httpd docker
+systemctl start httpd docker
 curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
