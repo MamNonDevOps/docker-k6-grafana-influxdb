@@ -24,3 +24,8 @@ Traceback (most recent call last):
   File "docker/transport/unixconn.py", line 43, in connect
 FileNotFoundError: [Errno 2] No such file or directory
 ```
+
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: .... dial unix /var/run/docker.sock: connect: permission denied
+```
+sudo setfacl --modify user:<user name or ID>:rw /var/run/docker.sock
+```
